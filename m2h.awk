@@ -224,7 +224,7 @@ newli {
     blank = 0;
     printp(par);
     if(nnl == nl && block[nl] == nblock[nl])
-	oprint("</li><li>");
+	 oprint("</li><li>");
 }
 blank && ! /^$/ {
     if(match(block[nnl], /[ou]l/) && !par)
@@ -246,7 +246,7 @@ nnl != nl || nblock[nl] != block[nl] {
 }
 nnl < nl || (nnl == nl && nblock[nl] != block[nl]) {
     for(; nl > nnl || (nnl == nl && pblock[nl] != block[nl]); nl--){
-	if(match(block[nl], /[ou]l/))
+	 if(match(block[nl], /[ou]l/))
 	    oprint("</li>");
 	oprint("</" block[nl] ">");
     }
