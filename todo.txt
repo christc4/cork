@@ -1,7 +1,0 @@
-Delete logic for index pages, all directories will go to directory/index
-
-remove logic for sitemap and robots
-deleted lines for echo content type, chatgpt dirs filter
-cleanurl forbidden
-sitesdir=sites
-    site=$SERVER_NAME; base_url=//$site; sitedir=$sitesdir/$site; master_template=`{get_lib_file default_master.tpl}; req_path=`{echo -n $REQUEST_URI}; req_url=$base_url^$req_path; local_path=$sitedir$req_path; local_file=''; ifs='/' { args=`{echo -n $req_path} }; if (test -d $local_path) local_path=$local_path^'index'; cd $sitedir; req_paths_list='/'; conf_wd='/'
