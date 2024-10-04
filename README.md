@@ -4,6 +4,16 @@
 
 Cork is an extremely lightweight static site generator, forked from  [werc](//werc.cat-v.org). Cork follows my software philosophy to a T, so many practices may be strange and displeasing to you.
 
+## Features
+
+- Written in RC shell
+	- plan9 coreutils are faster and more performant than GNU
+- Minimal as can be
+
+	- unlike the source for other static site generators, where you cannot see the forest for the trees, cork source is easy to follow 
+	
+## Lack of features and how to add them
+
 ## So what's the diff? 
 
 What remains similar between the two, is the leveraging of plan9 core utils.
