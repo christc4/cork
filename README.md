@@ -12,7 +12,41 @@ Where we diverge is organisation, and the complexities that follow different org
 
 ## Multiple sites?
 
-Simply do this
+Since cork sources one central script, in your webserver configuration file, copy the default cork script and change the site variable
+
+server "example.org" {
+	listen on * port 80
+	connection request timeout 4
+	location found "/*" {
+		root "/cork/example.org"
+	}
+	location not found "/*" {
+		root "/"
+		fastcgi {
+			param PLAN9 "/usr/local/plan9"
+			param SCRIPT_FILENAME "/cork/example.org.rc"
+			socket "/run/slowcgi.sock"
+		}
+	}
+}
+
+server "test.net" {
+	listen on * port 80
+	connection request timeout 4
+	location found "/*" {
+		root "/cork/test.net"
+	}
+	location not found "/*" {
+		root "/"
+		fastcgi {
+			param PLAN9 "/usr/local/plan9"
+			param SCRIPT_FILENAME "/cork/test.net.rc"
+			socket "/run/slowcgi.sock"
+		}
+	}
+}
+
+
 
 ## Why does Cork follow so many bad practices?
 
