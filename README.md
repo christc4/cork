@@ -1,6 +1,8 @@
 # Cork 
 
-To see a cork powered site, feel free to visit http://95.179.238.202/
+To see a cork powered site, feel free to visit my page on http://95.179.238.202/
+
+Other cork powered sites include, akinzon.org, pariffin.org, mazumder.org
 
 ## What is cork?
 
