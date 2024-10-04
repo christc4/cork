@@ -1,13 +1,7 @@
 #!/bin/awk -f
-function eschtml(t) { gsub("&", "\\&amp;", t); gsub("<", "\\&lt;", t); return t; }
-function oprint(t){ if(nr == 0) otext = otext t; else otext = otext t; }
-function subref(id){ for(; nr > 0 && sub("<<" id, ref[id], otext); nr--); if(nr == 0 && otext) otext = otext; }
-function nextil(t){ if(!match(t, /[<&\[*_\\-]|(\!\[)/)) return t; t1 = substr(t, 1, RSTART - 1); tag = substr(t, RSTART, RLENGTH); t2 = substr(t, RSTART + RLENGTH); if(ilcode && tag != "") return eschtml(t1 tag) nextil(t2); if(tag == "\\"){ if(match(t2, /^[\\*_{}\[\]()#+\-\.!]/)){ tag = substr(t2, 1, 1); t2 = substr(t2, 2); } return t1 tag nextil(t2); } if(tag == "-"){ if(sub(/^-/, "", t2)) tag = "&#8212;"; return t1 tag nextil(t2); } if(tag == "<"){ if(match(t2, /^[^ ]+[\.@][^ ]+>/)){ url = eschtml(substr(t2, 1, RLENGTH - 1)); t2 = substr(t2, RLENGTH + 1); linktext = url; return t1 "<a href=\"" url "\">" linktext "</a>" nextil(t2); } if(match(t2, /^[A-Za-z\/!][^>]*>/)){ tag = tag substr(t2, RSTART, RLENGTH); t2 = substr(t2, RLENGTH + 1); return t1 tag nextil(t2); } return t1 "&lt;" nextil(t2); } if(tag == "["){ if(!match(t2, /(\[.*\])|(\(.*\))/)) return t1 tag nextil(t2); match(t2, /^[^\]]*(\[[^\]]*\][^\]]*)*/); linktext = substr(t2, 1, RLENGTH); t2 = substr(t2, RLENGTH + 2); if(match(t2, /^\(/)){ match(t2, /^[^\)]+(\([^\)]+\)[^\)]*)*/); url = substr(t2, 2, RLENGTH - 1); pt2 = substr(t2, RLENGTH + 2); title = ""; if(match(url, /[ ]+\".*\"[ ]*$/)){ title = substr(url, RSTART, RLENGTH); url = substr(url, 1, RSTART - 1); match(title, /\".*\"/); title = " title=\"" substr(title, RSTART + 1, RLENGTH - 2) "\""; } if(match(url, /^<.*>$/)) url = substr(url, 2, RLENGTH - 2); url = eschtml(url); return t1 "<a href=\"" url "\"" title ">" nextil(linktext) "</a>" nextil(pt2); } } if(match(tag, /[*_]/)){ ntag = tag; if(sub("^" tag, "", t2)){ if(stag[ns] == tag && match(t2, "^" tag)) t2 = tag t2; else ntag = tag tag; } n = length(ntag); tag = (n == 2) ? "strong" : "em"; if(match(t1, / $/) && match(t2, /^ /)) return t1 tag nextil(t2); if(stag[ns] == ntag){ tag = "/" tag; ns--; } else stag[++ns] = ntag; tag = "<" tag ">"; return t1 tag nextil(t2); } }
-function inline(t){ ilcode = 0; ilcode2 = 0; ns = 0; return nextil(t); }
-function printp(tag){ if(!match(text, /^[ ]*$/)){ text = inline(text); if(tag != "") oprint("<" tag ">" text "</" tag ">"); else oprint(text); } text = ""; }
+function eschtml(t) { gsub("&", "\\&amp;", t); gsub("<", "\\&lt;", t); return t; }; function oprint(t){ if(nr == 0) otext = otext t; else otext = otext t; }; function subref(id){ for(; nr > 0 && sub("<<" id, ref[id], otext); nr--); if(nr == 0 && otext) otext = otext; }; function nextil(t){ if(!match(t, /[<&\[*_\\-]|(\!\[)/)) return t; t1 = substr(t, 1, RSTART - 1); tag = substr(t, RSTART, RLENGTH); t2 = substr(t, RSTART + RLENGTH); if(ilcode && tag != "") return eschtml(t1 tag) nextil(t2); if(tag == "\\"){ if(match(t2, /^[\\*_{}\[\]()#+\-\.!]/)){ tag = substr(t2, 1, 1); t2 = substr(t2, 2); } return t1 tag nextil(t2); } if(tag == "-"){ if(sub(/^-/, "", t2)) tag = "&#8212;"; return t1 tag nextil(t2); } if(tag == "<"){ if(match(t2, /^[^ ]+[\.@][^ ]+>/)){ url = eschtml(substr(t2, 1, RLENGTH - 1)); t2 = substr(t2, RLENGTH + 1); linktext = url; return t1 "<a href=\"" url "\">" linktext "</a>" nextil(t2); } if(match(t2, /^[A-Za-z\/!][^>]*>/)){ tag = tag substr(t2, RSTART, RLENGTH); t2 = substr(t2, RLENGTH + 1); return t1 tag nextil(t2); } return t1 "&lt;" nextil(t2); } if(tag == "["){ if(!match(t2, /(\[.*\])|(\(.*\))/)) return t1 tag nextil(t2); match(t2, /^[^\]]*(\[[^\]]*\][^\]]*)*/); linktext = substr(t2, 1, RLENGTH); t2 = substr(t2, RLENGTH + 2); if(match(t2, /^\(/)){ match(t2, /^[^\)]+(\([^\)]+\)[^\)]*)*/); url = substr(t2, 2, RLENGTH - 1); pt2 = substr(t2, RLENGTH + 2); title = ""; if(match(url, /[ ]+\".*\"[ ]*$/)){ title = substr(url, RSTART, RLENGTH); url = substr(url, 1, RSTART - 1); match(title, /\".*\"/); title = " title=\"" substr(title, RSTART + 1, RLENGTH - 2) "\""; } if(match(url, /^<.*>$/)) url = substr(url, 2, RLENGTH - 2); url = eschtml(url); return t1 "<a href=\"" url "\"" title ">" nextil(linktext) "</a>" nextil(pt2); } } if(match(tag, /[*_]/)){ ntag = tag; if(sub("^" tag, "", t2)){ if(stag[ns] == tag && match(t2, "^" tag)) t2 = tag t2; else ntag = tag tag; } n = length(ntag); tag = (n == 2) ? "b" : "em"; if(match(t1, / $/) && match(t2, /^ /)) return t1 tag nextil(t2); if(stag[ns] == ntag){ tag = "/" tag; ns--; } else stag[++ns] = ntag; tag = "<" tag ">"; return t1 tag nextil(t2); } }; function inline(t){ ilcode = 0; ilcode2 = 0; ns = 0; return nextil(t); }; function printp(tag){ if(!match(text, /^[ ]*$/)){ text = inline(text); if(tag != "") oprint("<" tag ">" text "</" tag ">"); else oprint(text); } text = ""; }
 
 # Early return function printp(tag){if(match(text,/^[ ]*$/)){text="";return}text=inline(text);if(tag=="p"){oprint("<"tag">"text)}else{oprint("<"tag">"text"</"tag">")};text=""}
-
 # ELSE function printp(tag){if(!match(text,/^[ ]*$/)){text=inline(text);if(tag=="p"){oprint("<"tag">"text)}else{oprint("<"tag">"text"</"tag">")}}text=""}
 
 BEGIN{blank=0;code=0;hr=0;html=0;nl=0;nr=0;otext="<article><a href=/search.html>search</a> <a href=/blog/me/reach>reach</a>";text="";par="p";}
@@ -38,8 +32,6 @@ html {
     oprint($0);
     next;
 }
-# List and quote blocks
-#   Remove indentation
 {
     for(nnl = 0; nnl < nl; nnl++)
 	if((match(block[nnl + 1], /[ou]l/) && !sub(/^(    |	)/, "")) || \
@@ -47,12 +39,10 @@ html {
 	    break;
 }
 nnl < nl && !blank && text && ! /^ ? ? ?([*+-]|([0-9]+\.)+)( +|	)/ { nnl = nl; }
-#   Quote blocks
 { 
     while(sub(/^> /, ""))
 	nblock[++nnl] = "blockquote";
 }
-#   Horizontal rules
 { hr = 0; }
 (blank || (!text && !code)) && /^ ? ? ?([-*_][ 	]*)([-*_][ 	]*)([-*_][ 	]*)+$/ {
     if(code){
@@ -63,7 +53,6 @@ nnl < nl && !blank && text && ! /^ ? ? ?([*+-]|([0-9]+\.)+)( +|	)/ { nnl = nl; }
     nnl = 0;
     hr = 1;
 }
-#   List items
 block[nl] ~ /[ou]l/ && /^$/ {
     blank = 1;
     next;
@@ -96,7 +85,6 @@ blank && ! /^$/ {
     par = "p";
     blank = 0;
 }
-# Close old blocks and open new ones
 nnl != nl || nblock[nl] != block[nl] {
     if(code){
 	oprint("</pre>");
@@ -121,7 +109,6 @@ nnl > nl {
 	    oprint("<li>");
     }
 }
-# Code blocks
 code && /^$/ { 
     if(blank)
 	oprint("");
@@ -139,17 +126,12 @@ code && /^$/ {
     oprint($0);
     next;
 }
-code {
-    oprint("</pre>");
-    code = 0;
-}
-# header
+code { oprint("</pre>"); code = 0 }
 /^#+/ && (!newli || par=="p" || /^##/) {
     for(n = 0; n < 6 && sub(/^# */, ""); n++)
 	sub(/#$/, "");
     par = "h" n;
 }
-# Paragraph    
 /^$/ {
     printp(par);
     par = "p";
