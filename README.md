@@ -2,7 +2,7 @@
 
 To see a cork powered site, feel free to visit my page on http://95.179.238.202/
 
-Other cork powered sites include, akinzon.org, pariffin.org, mazumder.org
+Other cork powered sites include, http://akinzon.org, http://pariffin.org, http://mazumder.org
 
 ## What is cork?
 
