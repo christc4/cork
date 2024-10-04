@@ -8,6 +8,8 @@ Cork is an extremely lightweight static site generator, forked from  [werc](//we
 
 ## Features
 
+- minification achieved at processing level
+	- less resource intensive
 - Written in RC shell
 	- plan9 coreutils are faster and more performant than GNU
 - Minimal as can be
