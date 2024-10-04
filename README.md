@@ -1,5 +1,7 @@
 # Cork 
 
+To see a cork powered site, feel free to visit http://95.179.238.202/
+
 ## What is cork?
 
 Cork is an extremely lightweight static site generator, forked from  [werc](//werc.cat-v.org). Cork follows my software philosophy to a T, so many practices may be strange and displeasing to you.
@@ -14,6 +16,12 @@ Cork is an extremely lightweight static site generator, forked from  [werc](//we
 	
 ## Lack of features and how to add them
 
+Cork powers my personal site http://95.179.238.202/, which exists as my online notebook. I am not focused on user friendliness, but functionality.
+
+- Pagetitles aren't static
+	- guide to be added
+	- can be assigned dynamically per .md page
+	
 ## So what's the diff? 
 
 What remains similar between the two, is the leveraging of plan9 core utils.
