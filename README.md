@@ -14,6 +14,7 @@ Where we diverge is organisation, and the complexities that follow different org
 
 Since cork sources one central script, in your webserver configuration file, copy the default cork script and change the site variable
 
+```
 server "example.org" {
 	listen on * port 80
 	connection request timeout 4
@@ -29,7 +30,9 @@ server "example.org" {
 		}
 	}
 }
+```
 
+```
 server "test.net" {
 	listen on * port 80
 	connection request timeout 4
@@ -45,6 +48,9 @@ server "test.net" {
 		}
 	}
 }
+```
+
+
 
 
 
