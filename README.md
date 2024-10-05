@@ -1,8 +1,6 @@
 # Cork 
 
-To see a cork powered site, feel free to visit my page on http://95.179.238.202/
-
-Other cork powered sites include, http://akinzon.org, http://pariffin.org, http://mazumder.org
+I strongly advise using default [werc](//werc.cat-v.org) for a site, you intend others to visit, as opposed to every other static site generator including Hugo.
 
 ## What is cork?
 
@@ -89,3 +87,10 @@ In short, lib/ was responsible for .tpl files that were responsible for headers,
 pub/ allowed the user to store css or /pub could also be used.
 
 It should be said, cork only has one central shell script, where everything is sourced.
+
+# Else
+
+
+To see a cork powered site, feel free to visit my page on http://95.179.238.202/
+
+Other cork powered sites include, http://akinzon.org, http://pariffin.org, http://mazumder.org
