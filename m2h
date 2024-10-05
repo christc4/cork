@@ -132,10 +132,6 @@ code { oprint("</pre>"); code = 0 }
 	sub(/#$/, "");
     par = "h" n;
 }
-/^$/ {
-    printp(par);
-    par = "p";
-    next;
-}
+/^$/ { printp(par); par = "p"; next; }
 { text = (text ? text " " : "") $0; }
 END{if(code){oprint("</pre>");code=0;}printp(par);for(;nl>0;nl--){if(match(block[nl],/[ou]l/))oprint("</li>");oprint("</" block[nl] ">");}gsub(/\n/,"",otext);oprint("<br><a href=../>back</a>");printf(otext);}
