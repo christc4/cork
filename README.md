@@ -1,7 +1,5 @@
 # Cork 
 
-This is a new line
-
 I strongly advise using default [werc](//werc.cat-v.org) for a site, you intend others to visit, as opposed to every other static site generator including Hugo.
 
 ## What is cork?
