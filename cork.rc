@@ -2,64 +2,64 @@
 
 path=(. /bin)
 
-fn run{
-	cork_root=`{pwd}
-	lpath=avsbq$REQUEST_URI
-	ifs='/'{
-		args=`{echo -n $REQUEST_URI}
-	}
+fn run {
+    rpaf=`{echo -n $REQUEST_URI}
+    lpaf=av$rpaf
+    ifs='/'
+    args = `{echo -n $rpaf}
 
-	if(test -d $lpath){
-		lpath=$lpath^'index'
-	}
+    if (test -d $lpaf) {
+        lpaf = $lpaf^'i'
+    }
 
-	cd avsbq
-	rpaths='/'
-	conf_wd='/'
+    rpafs='/'
+    conf_wd='/'
+    for (i in $args) {
+        conf_wd = $conf_wd^$i
+        rpafs = ($rpafs $conf_wd)
+        conf_wd = $conf_wd'/'
+    }
 
-	for(i in $args){
-		conf_wd=$conf_wd^$i
-		rpaths=($rpaths $conf_wd)
-		conf_wd=$conf_wd'/'
-		cd $i
-	}
-
-	cd $cork_root
-	body=(m2h.awk $lpath.md)
-	echo
-	tmp
+    body = (m2h.awk $lpaf.md)
+    echo
+    tmp
 }
 
-fn sbar{
-	echo -n '<style>nav li ul{padding-left:.5em}body{display:flex;flex-wrap:wrap;margin:0 20%}article{flex:1}nav{min-width:12em}*{list-style:none}nav ul{border-bottom:1px solid;}img{width:150}</style><nav><ul>'
-
-	ls -F avsbq/./$rpaths|sed -e 's,/+\./+,/,g' -e 's,^\./,,' -e '/\/index\.(md)$/d' -e '/\/[^\/]*(\.(md)|\/)$/!d' -e 's/\.(md)$//; s!^avsbq!!'|sort|awk -F/ 'function p(x,y,s){for(i=0;i<x-y;i++)printf s}BEGIN{lNF=2}{sub("/$","",$0);p(NF,lNF,"<li><ul>");p(lNF,NF,"</ul>")
-
-	lNF=NF
-	fp=$NF
-	gsub(/[\-_]/," ",fp)
-	printf"<li><a href=\%s\>%s</a>",$0,fp}END{p(lNF,2,"</ul>")
-	printf"</ul></nav><article><a href=/sitemap.html>sitemap</a> <a href=/blog/me/reach>reach</a>"}'
+fn sbar {
+    echo -n '<style>nav li ul{padding-left:.5em}body{display:flex;flex-wrap:wrap;margin:0 20%}article{flex:1}nav{min-width:12em}nav ul{list-style:none; border-bottom:1px solid;}</style><nav><ul>'
+    ls -F av/./$rpafs | sed -e 's,/+\./+,/,g' \
+        -e 's/\.(md)$//' -e 's!^av!!' | sort | awk -F/ '
+        function p(x, y, s) { for (i=0; i<x-y; i++) printf s }
+        BEGIN { lNF = 2 }
+        {
+            sub("/$", "", $0)
+            p(NF, lNF, "<li><ul>")
+            p(lNF, NF, "</ul>")
+            lNF = NF
+            fp = $NF
+            gsub(/[\-_]/, " ", fp)
+            printf "<li><a href=%s>%s</a>", $0, fp
+        }
+        END { p(lNF, 2, "</ul>"); printf "</ul></nav><article><a href=/blog/me/sitemap>sitemap</a> <a href=/blog/me/reach>reach</a>" }
+    '
 }
 
-fn runh{
-	$*(1) $*(2-)
+fn tmp {
+    for (h in $bar) {
+        runh $$h
+    }
+    runh $body
 }
 
-fn tmp{
-	for(h in $bar){
-		runh $$h
-	}
-	runh $body
+fn runh {
+    $*(1) $*(2-)
 }
 
-fn add{
-	_l=$1^_^$#$1
-	$_l=$*(2-)
-	$1=( $$1 $_l )
+fn add {
+    _l = $1^_^$#$1
+    $_l = $*(2-)
+    $1 = ($$1 $_l)
 }
 
 add bar sbar
-
 run
-
