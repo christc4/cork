@@ -1,0 +1,56 @@
+#!/bin/rc
+
+path=(. /bin)
+req_p=`{echo -n $REQUEST_URI }
+fn run {
+        lpaf=home$REQUEST_URI
+        rpafs='/'; wd='/'; ifs='/';
+        arg = `{echo -n $REQUEST_URI}
+        if (test -d $lpaf) {
+                lpaf=$lpaf^'i'
+        }
+        for (i in $arg) {
+                wd=$wd^$i
+                rpafs=($rpafs $wd)
+                wd=$wd'/'
+        }
+http_content_type='text/html'
+echo Content-Type: $http_content_type
+        echo;
+        for (h in $bar) { $$h }
+        mh $lpaf.md
+}
+fn sbar {
+        echo -n 'ENTER HTML PREAMBLE HERE'
+        ls -F home/./$rpafs | sed -e 's,/+\./+,/,g' \
+        -e '/\/i\.(md)$/d' \
+        -e 's/\.(md)$//' -e 's!^home!!' | sort | awk -F/ '
+         function p(x, y, s) { for(i=0; i < x-y; i+=1) printf s }
+    BEGIN { lNF=2; printf "<ul>" }
+    {
+        d = ""
+        if(match($0, "/$"))
+        d = "/"
+        sub("/$", "") # Strip trailing / for dirs so NF is consistent
+        p(NF, lNF, "  ⮧<ul>")
+        p(lNF, NF, "</ul><hr>")
+        lNF = NF
+        bname = $NF d
+        path = $0 d
+        gsub(/[\-_]/, " ", bname)
+        # Trailing / avoids false pattern matching
+        pa = path
+        gsub(/[^\/]$/, "&/", pa)
+        if(index(ENVIRON["req_p"] "/", pa) == 1)
+            printf "<li><a href="path" class=\"c\">"bname"</a>"
+        else
+            printf "<li><a href="path">"bname"</a>"
+    }
+    END { p(lNF, 2, "</ul>"); printf "</ul></nav><article>" }'
+}
+fn add {
+        _l = $1^_^$#$1
+        $_l = $*(2-)
+        $1 = ($$1 $_l)
+}
+add bar sbar; run
